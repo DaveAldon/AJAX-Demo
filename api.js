@@ -1,7 +1,7 @@
 $(window).load(function() {
   $.ajax({
     method: "GET",
-    Access_Control_Allow_Origin: 'https://davealdon.github.io/AJAX-Demo/',
+    origin: 'https://davealdon.github.io/AJAX-Demo/',
     url: "https://accounts.spotify.com/authorize",
     data: {
       client_id: 'aadca442888c4fe6b93573a75d8ecb45',
