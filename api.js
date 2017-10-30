@@ -1,4 +1,22 @@
 $(window).load(function() {
+  $.ajax({
+    Access_Control_Allow_Origin: '*',
+    method: "POST",
+    url: "https://accounts.spotify.com/api/token",
+    data: {
+      "token_type": "bearer",
+      "expires_in": 3600,
+
+      /*"code":          code,
+      "redirect_uri":  myurl,
+      "client_secret": mysecret,
+      "client_id":     myid, */
+    },
+    success: function(result) {
+      console.log(result);
+      // handle result...
+    },
+  });
   var searchArtists = function (query) {
       $.ajax({
           url: 'https://api.spotify.com/v1/search',
