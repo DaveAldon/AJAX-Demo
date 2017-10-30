@@ -29,13 +29,26 @@ var searchArtists = function (query) {
           access_token: $.urlParam('access_token'),
           token_type: 'bearer',
       },
-      // Upon success of the api message, we get the contents and parse through it
+      // Upon success of the api message, we get the contents and parse through it.
+      // If there are any missing values or no records found, we let the user know
       success: function (response) {
-        imageUrl = response.artists.items[0].images[0].url;
         $('#results').html(results_table);
-        $('#pic').html($('<img>',{id:'artistPicture',src:imageUrl}));
-        $('#name').append(response.artists.items[0].name);
-        $('#about').append('Genres: ' + response.artists.items[0].genres.join(", "));
+        if(!jQuery.isEmptyObject(response.artists.items)) {
+          try {
+            imageUrl = response.artists.items[0].images[0].url;
+            $('#pic').html($('<img>',{id:'artistPicture',src:imageUrl}));
+          }
+          catch(err) {
+            $('#pic').html('<b>No image provided</b>');
+          }
+          genre = response.artists.items[0].genres.join(", ");
+          if(!genre.length > 0) genre = 'None provided';
+          $('#name').append(response.artists.items[0].name);
+          $('#about').append('Genres: ' + genre);
+        }
+        else {
+          $('#results').html('<b>No results found</b>');
+        }
       }
   });
 };
@@ -55,15 +68,28 @@ $(document).ready(function() {
       },
       // When we're done, we go to spotify's site. The user continues and is
       // sent back according to our redirect_uri
-      complete : function(){
+      complete: function(){
         $(location).attr('href', this.url)
       }
     });
   });
 
+  // Restricts user input to numbers and letters
+  $('#query').keypress(function(key) {
+    if(((key.charCode < 97 || key.charCode > 122) && (key.charCode < 65 || key.charCode > 90) && (key.charCode != 45)) && (key.charCode < 48 || key.charCode > 57)) {
+      return false;
+    }
+  });
+
   // Search event where the text box contents are sent to our query
   // The results are faded into view
   $("#search").click(function(){
+    if(!jQuery.trim($("#query").val()).length > 0) {
+      $("#query").val('');
+      $('#results').html('<b>Please enter an artist\'s name</b>');
+      $('#results').css('visibility','visible').hide().fadeIn("slow");
+      return false;
+    }
     searchArtists($("#query").val());
     $("#query").val('');
     $('#results').css('visibility','visible').hide().fadeIn("slow");
