@@ -1,16 +1,12 @@
 $(window).load(function() {
   $.ajax({
-    Access_Control_Allow_Origin: '*',
-    method: "POST",
-    url: "https://accounts.spotify.com/api/token",
-    data: {
-      "token_type": "bearer",
-      "expires_in": 3600,
+    method: "GET",
 
-      /*"code":          code,
-      "redirect_uri":  myurl,
-      "client_secret": mysecret,
-      "client_id":     myid, */
+    url: "https://accounts.spotify.com/authorize",
+    data: {
+      client_id: 'aadca442888c4fe6b93573a75d8ecb45',
+      response_type: 'token',
+      redirect_uri: 'https://davealdon.github.io/AJAX-Demo/'
     },
     success: function(result) {
       console.log(result);
@@ -33,7 +29,6 @@ $(window).load(function() {
             console.log($imageUrl);
             $('#results').html($('<img>',{id:'artistPicture',src:$imageUrl}))
           }
-
       });
       console.log("asdsda");
   };
