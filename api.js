@@ -1,7 +1,11 @@
+// Spotify API calls that includes user authorization via client to server connection
+// and a query to Spotify to retrieve information about a user supplied artist
+// Created by David Crawford
+
 // This function retrieves the token from our url
-$.urlParam = function(name){
+$.urlParam = function(name) {
   results = new RegExp('(' + name + '=)([^&#]*)').exec(window.location.href);
-  if (results==null){
+  if (results==null) {
      return null;
   }
   else {
@@ -12,7 +16,7 @@ $.urlParam = function(name){
 // Table definition for artist result
 var results_table =
   "<table id='rt'>" +
-  "<tr><td id='pic' rowspan=2></td>" +
+  "<tr><td id='pic'rowspan=2></td>" +
   "<td id='name'></td></tr>" +
   "<tr><td id='about'></td>" +
   "</tr></table";
@@ -53,10 +57,18 @@ var searchArtists = function (query) {
   });
 };
 
-// Button click events
+// Event handling
 $(document).ready(function() {
+  // Visibility of interface depending on if the user is logged in
+  if($.urlParam('access_token')) {
+    $('#inactive').css('visibility','hidden');
+  }
+  else {
+    $('#inactive').css('opacity', .8);
+  }
+
   // When we login, we send the user to spotify's authorization page
-  $("#login").click(function(){
+  $("#login").click(function() {
     $.ajax({
       method: "GET",
       url: "https://accounts.spotify.com/authorize",
@@ -68,22 +80,22 @@ $(document).ready(function() {
       },
       // When we're done, we go to spotify's site. The user continues and is
       // sent back according to our redirect_uri
-      complete: function(){
+      complete: function() {
         $(location).attr('href', this.url)
       }
     });
   });
 
-  // Restricts user input to numbers and letters
+  // Restricts user input to numbers, letters, and spaces
   $('#query').keypress(function(key) {
-    if(((key.charCode < 97 || key.charCode > 122) && (key.charCode < 65 || key.charCode > 90) && (key.charCode != 45)) && (key.charCode < 48 || key.charCode > 57)) {
+    if((key.charCode != 32) && ((key.charCode < 97 || key.charCode > 122) && (key.charCode < 65 || key.charCode > 90) && (key.charCode != 45)) && (key.charCode < 48 || key.charCode > 57)) {
       return false;
     }
   });
 
   // Search event where the text box contents are sent to our query
   // The results are faded into view
-  $("#search").click(function(){
+  $("#search").click(function() {
     if(!jQuery.trim($("#query").val()).length > 0) {
       $("#query").val('');
       $('#results').html('<b>Please enter an artist\'s name</b>');
