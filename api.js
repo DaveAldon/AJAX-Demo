@@ -75,8 +75,8 @@ $(document).ready(function() {
       data: {
         client_id: 'aadca442888c4fe6b93573a75d8ecb45',
         response_type: 'token',
-        redirect_uri: 'http://localhost:8000'
-        //redirect_uri: 'https://davealdon.github.io/AJAX-Demo/'
+        //redirect_uri: 'http://localhost:8000' // Activate this for local testing
+        redirect_uri: 'https://davealdon.github.io/AJAX-Demo/'
       },
       // When we're done, we go to spotify's site. The user continues and is
       // sent back according to our redirect_uri
