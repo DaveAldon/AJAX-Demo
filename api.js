@@ -23,7 +23,7 @@ var results_table =
 
 // This function uses our token to send an api to spotify in order to get
 // information about an artist
-var searchArtists = function (query) {
+$.searchArtists = function (query) {
   $.ajax({
       url: 'https://api.spotify.com/v1/search',
       data: {
@@ -96,13 +96,14 @@ $(document).ready(function() {
   // Search event where the text box contents are sent to our query
   // The results are faded into view
   $("#search").click(function() {
+    $('#results').css('visibility','hidden').hide().fadeIn("slow");
     if(!jQuery.trim($("#query").val()).length > 0) {
       $("#query").val('');
       $('#results').html('<b>Please enter an artist\'s name</b>');
       $('#results').css('visibility','visible').hide().fadeIn("slow");
       return false;
     }
-    searchArtists($("#query").val());
+    $.searchArtists($("#query").val());
     $("#query").val('');
     $('#results').css('visibility','visible').hide().fadeIn("slow");
   });
