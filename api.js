@@ -23,7 +23,7 @@ var results_table =
 
 // This function uses our token to send an api to spotify in order to get
 // information about an artist
-var searchArtists = function (query) {
+$.searchArtists = function (query) {
   $.ajax({
       url: 'https://api.spotify.com/v1/search',
       data: {
@@ -102,7 +102,7 @@ $(document).ready(function() {
       $('#results').css('visibility','visible').hide().fadeIn("slow");
       return false;
     }
-    searchArtists($("#query").val());
+    $.searchArtists($("#query").val());
     $("#query").val('');
     $('#results').css('visibility','visible').hide().fadeIn("slow");
   });
